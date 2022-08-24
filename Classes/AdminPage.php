@@ -6,39 +6,48 @@ use Zedium\Interfaces\IRenderable;
 
 class AdminPage implements IRenderable {
 
-    private array $optionControls;
+    private $subPageItems;
+    private $pageSlug;
+    private $groupSlug;
+    private $currentPageItems;
+    private $currentSectionSlug;
+    public function __construct($subpageItems){
 
-    public function __construct(array $controls){
 
-        $this->optionControls = $controls;
+        $this->extractCurrentPageFromItems($subpageItems);
+
+        $this->pageSlug = $this->currentPageItems['page_slug'];
+        $this->groupSlug = $this->currentPageItems['group_slug'];
+        $this->currentSectionSlug = 'my-first-section';
+        //add_action('admin_init', array($this, 'registerSections'));
+        $this->registerSections();
+
+
+
     }
 
+    public function extractCurrentPageFromItems($subpageItems){
+        foreach ($subpageItems['sub_items'] as $item){
+            if($item['page_slug'] == $_GET['page']){
+                $this->currentPageItems = $item;
+                break;
+            }
+        }
+    }
+
+    public function registerSections()
+    {
+
+       register_setting($this->groupSlug, 'my_field');
+       add_settings_section($this->currentSectionSlug, 'Hello', function(){ echo 'This is section callback'; }, $this->pageSlug);
+       add_settings_field('my_field', 'My field', array($this, 'render'), $this->pageSlug, $this->currentSectionSlug);
+
+    }
 
 
     public function render()
     {
-
-        $wrapperClassName = 'wrap';
-        $afterContentDiv = '</div>';
-
-        $filteredWrapperClassName = apply_filters('zedium_options_plus_wrapper_class_name',$wrapperClassName ,null);
-        $filteredBeforeContentDiv = '<div class="' . $filteredWrapperClassName . '">';
-        $filteredBeforeContentDiv = apply_filters('zedium_options_plus_before_content_dive', $filteredBeforeContentDiv, null);
-        $filteredAfterContentDiv = apply_filters('zedium_options_plus_before_content_dive', $afterContentDiv, null);
-
-
-
-        echo $filteredBeforeContentDiv;
-        $this->convertToHtmlControl();
-        echo $filteredAfterContentDiv;
-
-    }
-
-    public function convertToHtmlControl(){
-        foreach ($this->optionControls['items'] as $item) {
-            echo $item->render();
-        }
-
+        echo "<input type='text' name='my_field' id='my_field' value='". get_option('my_field') ."'/>";
     }
 
 

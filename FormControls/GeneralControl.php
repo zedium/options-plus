@@ -13,8 +13,9 @@ abstract class GeneralControl implements IRenderable
     private $value;
     private $placeholder;
     private $disabled;
+    private $section;
 
-    public function __construct($type='', $id='', $name='', $label='', $value='', $placeholder='', $disabled='' ){
+    public function __construct($type='', $id='', $name='', $label='', $value='', $placeholder='', $disabled='', $section ='' ){
         $this->type = $type;
         $this->id = $id;
         $this->name = $name;
@@ -22,6 +23,8 @@ abstract class GeneralControl implements IRenderable
         $this->value = $value;
         $this->placeholder = $placeholder;
         $this->disabled = $disabled;
+        $this->section = $section;
+
     }
 
     /**
@@ -134,6 +137,22 @@ abstract class GeneralControl implements IRenderable
     public function setDisabled($disabled): void
     {
         $this->disabled = $disabled;
+    }
+
+    /**
+     * @return mixed|string
+     */
+    public function getSection()
+    {
+        return $this->section;
+    }
+
+    /**
+     * @param mixed|string $section
+     */
+    public function setSection($section): void
+    {
+        $this->section = $section;
     }
 
     public abstract function render();

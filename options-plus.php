@@ -20,21 +20,48 @@
  use Zedium\Classes\Menu;
  use Zedium\Classes\ArrayToControl;
 
+/*
+ add_action('admin_menu', function(){
 
-add_action('init', function(){
+     add_menu_page('My Title', 'Options', 'manage_options', 'zedium-menu-slug',function() {
+         settings_errors();
+         echo "<form action='options.php' method='post'>";
+         settings_fields('zedium-group1');
+
+         do_settings_sections('zedium-menu-slug');
+         submit_button('Submit');
+         echo '</form>';
+     });
+
+
+ });
+
+
+ add_action('admin_init', function(){
+     register_setting('zedium-group', 'my_field');
+     add_settings_section('my-section', 'Section Title', function(){echo 'hi';}, 'zedium-menu-slug' );
+     add_settings_field('my_field', 'Title', function(){
+         echo "<input type='text' name='my_field' id='my_field' />";
+     }, 'zedium-menu-slug', 'my-section');
+ });*/
+
+
+
     global $items;
 
-    $menu_items = array(
-        'title' => 'Options',
-        'page_title' => 'Options Plus Theme Options',
-        'slug' => 'zedium_options_plus'
-    );
 
-    $menuInstance = new Menu($menu_items, new AdminPage($items));
+    add_action('admin_menu', function() use ($items){
+        new Menu($items);
+    });
+
+    add_action('admin_init', function() use($items){
+        $adminPage = new AdminPage($items);
+    });
+
 
     //new ArrayToControl($menuInstance);
 
-});
+
  
  
 
