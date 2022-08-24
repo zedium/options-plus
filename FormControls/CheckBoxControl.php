@@ -13,7 +13,7 @@ class CheckBoxControl extends GeneralControl implements \Zedium\Interfaces\IRend
 
     }
 
-    public function render(): string
+    public function render()
     {
 
 
@@ -29,7 +29,7 @@ class CheckBoxControl extends GeneralControl implements \Zedium\Interfaces\IRend
         $output .= !empty($this->getIsChecked())?"checked='checked' ":'';
         $output .= '/>';
 
-        return $output;
+        echo $output;
 
     }
 

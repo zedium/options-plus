@@ -6,52 +6,50 @@ use Zedium\Interfaces\IRenderable;
 
 class Menu{
 
-    private array $items;
-    private $currentPageItems;
+    private array $menu;
+    private $currentPageMenu;
     private AdminPage $adminPage;
 
     private $groupSlug;
     private $pageSlug;
 
-    public function __construct(array $items){
+    public function __construct(array $menu){
 
-        $this->items = $items;
-        $this->extractCurrentPageFromItems();
-        $this->groupSlug = $this->currentPageItems['group_slug'];
-        $this->pageSlug = $this->currentPageItems['page_slug'];
 
-        $this->initMenu();
+        $this->menu = $menu;
+        $this->currentPageMenu = $this->extractCurrentPageFromItems($menu);
+        $this->groupSlug = $this->currentPageMenu['group_slug'];
+        $this->pageSlug = $this->currentPageMenu['page_slug'];
+
+        $this->renderMenuInMainMenus();
 
     }
 
-    public function extractCurrentPageFromItems(){
-        foreach ($this->items['sub_items'] as $item){
+    public function extractCurrentPageFromItems($menu){
+
+
+        foreach ($menu['sub_menus'] as $item){
             if($item['page_slug'] == $_GET['page']){
-                $this->currentPageItems = $item;
-                break;
+                return $item;
+
             }
         }
     }
 
-    public function getItems(){
 
-        return  $this->items;
-
-    }
-
-    public function initMenu(){
+    public function renderMenuInMainMenus(){
 
 
         add_menu_page(
-            $this->items['main_item']['page_title'],
-            $this->items['main_item']['menu_title'],
+            $this->menu['main_menu']['page_title'],
+            $this->menu['main_menu']['menu_title'],
             'manage_options',
-            $this->items['main_item']['page_slug'],
-            array($this, 'renderMenuPageCallback'),
-            $this->items['main_item']['menu_icon']
+            $this->menu['main_menu']['page_slug'], null,
+            //array($this, 'renderMenuPageCallback'),
+            $this->menu['main_menu']['menu_icon']
 
         );
-        foreach($this->items['sub_items'] as $item){
+        foreach($this->menu['sub_menus'] as $item){
 
             add_submenu_page($item['parent_page_slug'], $item['page_title'], $item['menu_title'], 'manage_options', $item['page_slug'], array($this, 'renderMenuPageCallback'));
         }
@@ -60,15 +58,15 @@ class Menu{
 
     public function renderMenuPageCallback(){
 
-
+//        if(empty($this->groupSlug))
+//            return;
         settings_errors();
 
         echo "<form action='options.php' method='post'>";
 
-        settings_fields($this->groupSlug);
+        settings_fields(OPTIONS_GROUP_NAME);
 
         do_settings_sections($this->pageSlug);
-
 
         submit_button('Submit');
 

@@ -3,40 +3,42 @@
 use \Zedium\FormControls\TextControl;
 use \Zedium\FormControls\CheckBoxControl;
 
+const OPTIONS_GROUP_NAME = 'zedium-group';
+
 $items = array(
 
-    'main_item' => array(
+    'main_menu' => array(
         'page_title' => 'Theme Options',
         'menu_title' => 'Options',
         'page_slug' => 'option-plus-general-options',
         'menu_icon' => 'dashicons-admin-generic',
     ),
-    'sub_items' => array(
+    'sub_menus' => array(
         array(
             'page_title' => 'Theme Options',
             'menu_title' => 'Options',
             'page_slug' => 'option-plus-general-options',
             'parent_page_slug' => 'option-plus-general-options',
             'menu_icon' => 'dashicons-admin-generic',
-            'group_slug'=>'general-group',
+            'group_slug'=>'zedium-group',
             'sections' => array(
                                     array(
                                         'section_title' => 'General Title',
                                         'section_description' => 'General Description',
                                         'section_slug'=> 'section-general-options-site-options',
-                                        'page_slug'=>'option-plus-general-options',
+
                                         'items' => array(
                                             new TextControl('text', 'site_url', 'site_url', 'Site URL', '', 'Site URL', null, 'option-plus-general-options'),
-                                            new TextControl('text', 'site_title', 'site_title', 'Site Title', '', 'Site Title', true, 'option-plus-general-options'),
+                                            new TextControl('text', 'site_title', 'site_title', 'Site Title', '', 'Site Title', null, 'option-plus-general-options'),
                                         )),
                                     array(
                                         'section_title' => 'Site availability',
                                         'section_description' => 'Availability Description',
                                         'section_slug'=> 'section-general-options-site-availability',
-                                        'page_slug'=>'option-plus-general-option',
+
                                         'items' => array(
                                             new TextControl('text', 'site_availibility', 'site_availibility', 'Site URL', '', 'Site URL', null, 'option-plus-account-options'),
-                                            new TextControl('text', 'site_is_down', 'site_availibility', 'Site Title', '', 'Site Title', true, 'option-plus-account-options'),
+                                            new TextControl('text', 'site_is_down', 'site_is_down', 'Site is down', '', 'Site Title', null, 'option-plus-account-options'),
                                         )
                                     ),
                                 ),
@@ -45,7 +47,7 @@ $items = array(
 
         ),
 
-        /*array(
+        array(
             'page_title' => 'Custom CSS',
             'menu_title' => 'Custom Css',
             'page_slug' => 'option-plus-custom-css',
@@ -68,7 +70,7 @@ $items = array(
                     'section_slug'=> 'section-show-logo',
                     'page_slug'=>'option-plus-custom-css',
                     'items' => array(
-                        new TextControl('text', 'show_logo', 'show_logo', 'Show Logo', '', 'Show logo', null, 'section-show-logo'),
+                        new CheckBoxControl('checkbox', 'show_logo', 'show_logo', 'Show Logo', '', 'Show logo', null, 'section-show-logo'),
                         //new TextControl('text', 'site_is_down', 'site_availibility', 'Site Title', '', 'Site Title', true, 'option-plus-account-options'),
                     )
                 ),
@@ -76,6 +78,6 @@ $items = array(
 
 
 
-        )*/
+        )
     )
 );
