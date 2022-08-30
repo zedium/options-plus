@@ -52,7 +52,8 @@ class AdminPage  {
     public function registerSections()
     {
         //
-
+        if(empty($this->currentPageItems))
+            return;
         foreach($this->currentPageItems['sections'] as $section) {
            add_settings_section($section['section_slug'], $section['section_name'], function () use ($section) {
                echo '<h2>' . $section['section_description'] . '</h2>';
